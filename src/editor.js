@@ -321,9 +321,49 @@ function createHTML(options = {}) {
                 }
             },
             html: {
-                result: function (html){
+                result: function (html,content){
                     if (html){
                         exec('insertHTML', html);
+                        Actions.UPDATE_HEIGHT();
+                    }
+                    if (content){
+                        const pos = content.indexOf('/')
+                        const sub1 = content.substring(0,pos)
+                        const sub2 = content.substring(pos+1)
+                        
+                        for (let i = 0; i < sub2; i ++){
+                            exec('delete')
+                        } 
+
+                        let sel, range;
+
+                        if (window.getSelection && (sel = window.getSelection()).rangeCount) {
+                            range = sel.getRangeAt(0); // get range first except Firefox
+
+                            range.collapse(true);  // no content inside the range
+                            var span = document.createElement("span");
+                            span.setAttribute('contentEditable', 'false');
+                            span.classList.add("user-tagged");
+                            span.appendChild( document.createTextNode(sub1) );
+                       
+                            range.insertNode(span);
+                    
+                            // Move the caret immediately after the inserted span
+                            range.setStartAfter(span);
+                            range.collapse(true);
+                            sel.removeAllRanges();
+                            sel.addRange(range);    
+
+                            //
+                            var sp = document.createElement("span");
+                            sp.appendChild( document.createTextNode( '\u00A0' ) );
+
+                            range.insertNode(sp)
+                            range.setStartAfter(sp);
+                            range.collapse(true);
+                            sel.removeAllRanges();
+                            sel.addRange(range);       
+                        }
                         Actions.UPDATE_HEIGHT();
                     }
                 }

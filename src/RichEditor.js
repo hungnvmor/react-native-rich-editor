@@ -378,8 +378,8 @@ export default class RichTextEditor extends Component {
         this.sendAction(actions.insertText, 'result', text);
     }
 
-    insertHTML(html) {
-        this.sendAction(actions.insertHTML, 'result', html);
+    insertHTML(html,content) {
+        this.sendAction(actions.insertHTML, 'result', html, content);
     }
 
     insertLink(title, url) {
